@@ -55,8 +55,6 @@ function markerColor(animalType) {
 var animalTypeArray = [];
 var animalAgeArray = [];
 
-
-
 function makeDataArray(curRow) {
   animalTypeArray.push(curRow.type);
 
@@ -73,6 +71,32 @@ function makeDataArray(curRow) {
   }
   // console.log("myAge", myAge);
   animalAgeArray.push(myAge);
+};
+
+function markerMessage(curRow) {
+  myMsg = "Age: " + curRow.age;
+  // if (curRow.at_aac) {
+    if (curRow.at_aac.substr(0, 3).trim() == 'Yes'){
+      myMsg = myMsg + "; Available: Yes" + "<br> Image: <a href=" + curRow.image.url + ">Image</a><br>";
+    } 
+    else {
+      myMsg = myMsg + "; Available: No";
+    }
+    return myMsg;
+
+};
+function markerSize(petAge) {
+
+  if (petAge.includes("year"))  {
+    mySize = 12;
+  } 
+  else if (petAge.includes("month"))  {
+    mySize = 10;
+  } 
+  else {
+    mySize = 8;
+  }
+  return mySize;
 };
 // var catPlaces = new L.LayerGroup();
 
@@ -92,17 +116,14 @@ d3.json(url, function (response) {
       makeDataArray(currentRow);
       L.circleMarker([+currentRow.location.latitude, +currentRow.location.longitude], 
         {color: markerColor(currentRow.type),
-          radius: 10,
+          radius: markerSize(currentRow.age),
           fill: false
         })
-        .bindPopup("Age:" + currentRow.age)
+        .bindPopup( markerMessage(currentRow))
         .addTo(myMap);
-
-
     }
   }
   console.log("ageArray", animalAgeArray);
   console.log("typeArray", animalTypeArray);
 
 });
-
