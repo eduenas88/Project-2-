@@ -1,5 +1,5 @@
 // Read CSV Data
-d3.csv("data/AustinDC.csv").then(function(data) {
+d3.csv("Table/data/AustinDC.csv", function(data) {
     console.log(data);
 
     let dataSet = data.map(i => {
